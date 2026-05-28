@@ -6,17 +6,20 @@ void buscaInstrucao(){
     */
 }
 
+
 void buscaOperando(){
     /*
     Fazer o codigo
     */
 }
 
+
 void executaInstrucao(){
     /*
     Fazer o codigo
     */
 }
+
 
 void escreveResultado(){
     /*
