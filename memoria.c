@@ -1,4 +1,5 @@
 #include "memoria.h"
+#include "bancoRegistradores.h"
 
 
 long long int memoria[TAMANHO_MEMORIA];
@@ -17,8 +18,7 @@ long long int lePalavra(int endereco){ //Instrucao vai vir num int ou qualquer c
 }
 
 
-void escrevePalavra(int endereco, long long int palavra){
-    int ender = endereco & BITS_ENDERECO;
+void escrevePalavra(long long int palavra){
     long long int palavraEscrever = palavra & BITS_PALAVRA; //0 todos bits à esquerda dos 40 menos significativos
-    memoria[ender] = palavraEscrever;
+    memoria[regs.MBR] = palavraEscrever;
 }
