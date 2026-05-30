@@ -6,30 +6,35 @@
 #define BITS_INSTRUCAO
 //Pegar os bits do opcode
 
+static int usar_ibr = 0;
+
 void buscaInstrucao(){
-    /*
-    le uma palavra
-    coloca no mbr
-    coloca palavra no mar
-    */
+    if (usar_ibr){
+        regs.MAR = regs.MBR & BITS_ENDERECO;
+        regs.IR = (regs.IBR >> 12) & BITS_OPCODE;
+        usar_ibr = 0;
+    }
+    else{
+        regs.MAR = regs.PC;
+        regs.MBR = lePalavra(regs.MAR);
+        regs.PC = regs.PC ++;
+
+        decodificacaoInstrucao(); // Só chama a decodifica instrução se não houver instrução à direita
+    }
 }
 
 
 void decodificacaoInstrucao(){
-    /*
-    Lê os 20 bits da esquerda
-    8 bits vai pro ir
-    12 bits vai pro mbr & BITS ENDERECO
-    shift 20 bits pra esquerda
-    20 bits da esquerda agora ficam no ibr
-    */
+    regs.IR = (regs.MBR >> 32) & BITS_OPCODE;
+    regs.MAR = (regs.MBR >> 20) & BITS_ENDERECO;
+    regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
+
+    usar_ibr = 1;
 }
 
 
 void buscaOperando(){
-    /*
-    
-    */
+    regs.MBR = lePalavra(regs.MAR);
 }
 
 
@@ -41,7 +46,5 @@ void executaInstrucao(){
 
 
 void escreveResultado(){
-    /*
-    Fazer o codigo
-    */
+    escrevePalavra(regs.AC);
 }
