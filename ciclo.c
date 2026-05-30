@@ -170,6 +170,7 @@ void executaInstrucao(){
 
 }
 
+//Modificação teste
 
 void escreveResultado(){
     escrevePalavra(regs.AC);
