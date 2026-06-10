@@ -99,7 +99,7 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
 
 
 void iniciarCicloDeMaquina(){
-
+    
 }
 
 

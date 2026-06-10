@@ -12,13 +12,14 @@ void inicializarMemoria(){
 }
 
 
-long long int lePalavra(int endereco){ //Instrucao vai vir num int ou qualquer coisa maior que int 
-    int ender = endereco & BITS_ENDERECO; //0 todos os bits à esquerda dos 12 menos significativos
-    return memoria[ender];
+long long int lePalavra(){
+    printf("Palavra lida do endereco: %d\n", regs.MAR);
+    return memoria[regs.MAR];
 }
 
 
 void escrevePalavra(long long int palavra){
+    print("Palavra lida do endereco: %d\n", regs.MAR);
     long long int palavraEscrever = palavra & BITS_PALAVRA; //0 todos bits à esquerda dos 40 menos significativos
     memoria[regs.MAR] = palavraEscrever;
 }

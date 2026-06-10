@@ -11,7 +11,7 @@
 
 // Promessas das funções (apenas o esqueleto)
 void inicializarMemoria();
-long long int lePalavra(int endereco);
+long long int lePalavra();
 void escrevePalavra(long long int palavra);
 
 #endif

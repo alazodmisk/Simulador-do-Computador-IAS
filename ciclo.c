@@ -4,20 +4,19 @@
 #include "memoria.h"
 
 
-#define BITS_INSTRUCAO
-//Pegar os bits do opcode
-
-static int usar_ibr = 0;
+int usar_ibr = 0;
 
 void buscaInstrucao(){
     if (usar_ibr){
         regs.MAR = regs.MBR & BITS_ENDERECO;
         regs.IR = (regs.IBR >> 12) & BITS_OPCODE;
         usar_ibr = 0;
+        printf("Instrucao colhida o registrador IBR\n");
     }
     else{
+        printf("Instrucao lida da memoria\n");
         regs.MAR = regs.PC;
-        regs.MBR = lePalavra(regs.MAR);
+        regs.MBR = lePalavra();
         regs.PC = regs.PC ++;
 
         decodificacaoInstrucao(); // Só chama a decodifica instrução se não houver instrução à direita
@@ -26,6 +25,7 @@ void buscaInstrucao(){
 
 
 void decodificacaoInstrucao(){
+    printf("Instrucao decodificada\n");
     regs.IR = (regs.MBR >> 32) & BITS_OPCODE;
     regs.MAR = (regs.MBR >> 20) & BITS_ENDERECO;
     regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
