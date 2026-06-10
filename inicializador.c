@@ -7,6 +7,14 @@
 #include "bancoRegistradores.h"
 
 
+void esperarEnter(){
+    printf("\n[Pressione ENTER para o proximo passo...]");
+    
+    char c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+
 long long int traduzirOpcode(char *nomeInstrucao) {
     if (strcmp(nomeInstrucao, "LOAD") == 0)         return 1;
     if (strcmp(nomeInstrucao, "LOAD_NEG") == 0)     return 2;
@@ -99,7 +107,41 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
 
 
 void iniciarCicloDeMaquina(){
-    
+    inicializarRegistradores();
+
+    int rodando = 1;
+    getchar(); 
+
+    while (rodando) {
+        printf("\n============================================\n");
+        printf(" INICIANDO NOVO CICLO (PC atual: %d)\n", regs.PC);
+        printf("============================================\n");
+
+        buscaInstrucao();
+        printf("-> [1] Busca da Instrucao: \n");
+        printf("       Opcode (IR) = %d | Endereco (MAR) = %d\n", regs.IR, regs.MAR);
+        esperarEnter();
+
+        buscaOperandos();
+        printf("-> [2] Busca de Operandos: \n");
+        printf("       Dado carregado (MBR) = %lld\n", regs.MBR);
+        esperarEnter();
+
+        executaInstrucao();
+        printf("-> [3] Execucao: \n");
+        printf("       Acumulador (AC) = %lld | Multiplicador (MQ) = %lld\n", regs.AC, regs.MQ);
+        esperarEnter();
+
+        escreveResultado();
+        printf("-> [4] Escrita do Resultado: \n");
+        printf("       (Se houver escrita, ela foi enviada para a memoria)\n");
+        esperarEnter();
+        
+        if (regs.IR == 0) {
+            printf("\n*** Instrucao de HALT encontrada. Parando o ciclo. ***\n");
+            rodando = 0;
+        }
+    }
 }
 
 
@@ -110,6 +152,9 @@ int main (){
     printf("\n===================================\n");
     printf("      SIMULADOR COMPUTADOR IAS     \n");
     printf("===================================\n");
+
+    inicializarMemoria();
+    inicializarRegistradores();
 
     do {
         printf("1. Carregar programa (.txt)\n");
