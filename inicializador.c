@@ -66,7 +66,7 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
 
         while (fscanf(arquivo, "%s %d", instrucao, &valorEnd) == 2) {
 
-            if (enderecoAtualInstrucoes < TAMANHO_MEMORIA && enderecoAtualDados < INICIO_INSTRUCOES){
+            if (enderecoAtualInstrucoes > TAMANHO_MEMORIA || enderecoAtualDados > INICIO_INSTRUCOES){
                     printf("Memoria RAM insuficiente | Interrupção Imediata\n");
                     fclose(arquivo);
                     return;
