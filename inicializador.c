@@ -47,13 +47,17 @@ long long int traduzirOpcode(char *nomeInstrucao) {
 
 
 void carregarProgramaDeArquivo(char* nomeArquivo){
+    inicializarMemoria();
+    inicializarRegistradores();
+    
     FILE *arquivo = fopen(nomeArquivo, "r");
         if (arquivo == NULL) {
             printf("Erro: Nao foi possivel abrir o arquivo '%s'.\n", nomeArquivo);
             return;
         }
 
-        int enderecoAtual = INICIO_INSTRUCOES;
+        int enderecoAtualInstrucoes = INICIO_INSTRUCOES;
+        int enderecoAtualDados = 0;
         char instrucao[20];
         int valorEnd;
         
@@ -61,20 +65,19 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
         int leuEsquerda = 0; 
 
         while (fscanf(arquivo, "%s %d", instrucao, &valorEnd) == 2) {
+
+            if (enderecoAtualInstrucoes < TAMANHO_MEMORIA && enderecoAtualDados < INICIO_INSTRUCOES){
+                    printf("Memoria RAM insuficiente | Interrupção Imediata\n");
+                    fclose(arquivo);
+                    return;
+                }
             
             long long int opcodeAtual = traduzirOpcode(instrucao);
 
             if (opcodeAtual == -1) {
-                if (leuEsquerda) {
-                    long long int palavra = (opcodeEsq << 32) | (endEsq << 20);
-                    regs.MAR = enderecoAtual;
-                    escrevePalavra(palavra);
-                    enderecoAtual++;
-                    leuEsquerda = 0;
-                }
-                regs.MAR = enderecoAtual;
+                regs.MAR = enderecoAtualDados;
                 escrevePalavra(valorEnd);
-                enderecoAtual++;
+                enderecoAtualDados++;
             } 
             else {
                 if (leuEsquerda == 0) {
@@ -86,9 +89,9 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
                     endDir = valorEnd;
                     
                     long long int palavraCompleta = (opcodeEsq << 32) | (endEsq << 20) | (opcodeDir << 12) | endDir;
-                    regs.MAR = enderecoAtual;
+                    regs.MAR = enderecoAtualInstrucoes;
                     escrevePalavra(palavraCompleta);
-                    enderecoAtual++;
+                    enderecoAtualInstrucoes++;
                     leuEsquerda = 0;
                 }
             }
@@ -96,9 +99,9 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
 
         if (leuEsquerda == 1) {
             long long int palavraIncompleta = (opcodeEsq << 32) | (endEsq << 20);
-            regs.MAR = enderecoAtual;
+            regs.MAR = enderecoAtualInstrucoes;
             escrevePalavra(palavraIncompleta);
-            enderecoAtual++;
+            enderecoAtualInstrucoes++;
         }
 
         fclose(arquivo);
@@ -120,6 +123,7 @@ void iniciarCicloDeMaquina(){
         buscaInstrucao();
         printf("-> [1] Busca da Instrucao: \n");
         printf("       Opcode (IR) = %d | Endereco (MAR) = %d\n", regs.IR, regs.MAR);
+        printf("       \n", regs.IR, regs.MAR);
         esperarEnter();
 
         buscaOperandos();
@@ -153,8 +157,6 @@ int main (){
     printf("      SIMULADOR COMPUTADOR IAS     \n");
     printf("===================================\n");
 
-    inicializarMemoria();
-    inicializarRegistradores();
 
     do {
         printf("1. Carregar programa (.txt)\n");
