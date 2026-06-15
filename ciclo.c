@@ -121,6 +121,9 @@ void executaInstrucao(){
         
         case 0x0C: // Instrução: DIV M(X) | Binário: 00001100
             // Lógica da divisão: regs.AC / regs.MBR
+            regs.MQ = regs.AC / regs.MBR;
+            regs.AC = regs.AC % regs.MBR;
+            // EH ASSIM QUE FAZ? coloca a dividsao no mq e o resto da div no ac
             break;
         
         case 0x14: // Instrução: LSH | Binário: 00010100
