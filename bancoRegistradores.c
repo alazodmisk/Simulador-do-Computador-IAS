@@ -11,4 +11,6 @@ void inicializarRegistradores(){
     regs.IR = 0;
     
     regs.PC = INICIO_INSTRUCOES;
+
+    regs.ERRO = 0;
 }

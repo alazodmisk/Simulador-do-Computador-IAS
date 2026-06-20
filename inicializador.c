@@ -125,21 +125,37 @@ void iniciarCicloDeMaquina(){
         printf("       Opcode (IR) = %d | Endereco (MAR) = %d\n", regs.IR, regs.MAR);
         printf("       \n", regs.IR, regs.MAR);
         esperarEnter();
+        if (regs.ERRO) {
+            printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
+            return;
+        }
 
         buscaOperandos();
         printf("-> [2] Busca de Operandos: \n");
         printf("       Dado carregado (MBR) = %lld\n", regs.MBR);
         esperarEnter();
+        if (regs.ERRO) {
+            printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
+            return;
+        }
 
         executaInstrucao();
         printf("-> [3] Execucao: \n");
         printf("       Acumulador (AC) = %lld | Multiplicador (MQ) = %lld\n", regs.AC, regs.MQ);
         esperarEnter();
+        if (regs.ERRO) {
+            printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
+            return;
+        }
 
         escreveResultado();
         printf("-> [4] Escrita do Resultado: \n");
         printf("       (Se houver escrita, ela foi enviada para a memoria)\n");
         esperarEnter();
+        if (regs.ERRO) {
+            printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
+            return;
+        }
         
         if (regs.IR == 0) {
             printf("\n*** Instrucao de HALT encontrada. Parando o ciclo. ***\n");

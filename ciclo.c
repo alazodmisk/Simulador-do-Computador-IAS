@@ -116,14 +116,23 @@ void executaInstrucao(){
             break;
         
         case 0x0B: // Instrução: MUL M(X) | Binário: 00001011
-            // regs.MQ * regs.MBR: 40 +significativos -> AC e 40 -significativos MQ
+            buscaOperando();
+            __int128 resultadoMultiplicacao = (__int128)regs.MQ * regs.MBR;
+            regs.MQ = resultadoMultiplicacao & BITS_PALAVRA; // Parte menos significativa
+            regs.AC = (resultadoMultiplicacao >> 40) & BITS_PALAVRA; // Parte mais significativa
             break;
         
         case 0x0C: // Instrução: DIV M(X) | Binário: 00001100
-            // Lógica da divisão: regs.AC / regs.MBR
+            buscaOperando();
+            
+            if (regs.MBR == 0) {
+                fprintf(stderr, "Erro: divisao por zero.\n");
+                regs.ERRO = 1; // Sinaliza o erro no banco de registradores
+                return;
+            }
+            
             regs.MQ = regs.AC / regs.MBR;
             regs.AC = regs.AC % regs.MBR;
-            // EH ASSIM QUE FAZ? coloca a dividsao no mq e o resto da div no ac
             break;
         
         case 0x14: // Instrução: LSH | Binário: 00010100
@@ -137,33 +146,54 @@ void executaInstrucao(){
 
         // DESVIO (JUMP)       
         case 0x0D: // Instrução: JUMP M(X, 0:19) | Binário: 00001101
-            // Lógica do Jump Incondicional Esquerdo
+            regs.PC = regs.MAR; // Salta para o endereço da metade esquerda
+            usar_ibr = 0; // Garante que a próxima instrução seja buscada da memória, não do IBR
             break;
         
         case 0x0E: // Instrução: JUMP M(X, 20:39) | Binário: 00001110
-            // Lógica do Jump Incondicional Direito
+            regs.PC = regs.MAR; // Salta para o endereço da metade direita
+            regs.MBR = lePalavra(regs.PC);
+            regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
+            regs.PC++;
+            usar_ibr = 1;
             break;
         
         case 0x0F: // Instrução: JUMP+ M(X, 0:19) | Binário: 00001111
             if (regs.AC >= 0) {
-                // Lógica do Jump Condicional Esquerdo
+                regs.PC = regs.MAR; // Salta para o endereço da metade esquerda
+                usar_ibr = 0; // Garante que a próxima instrução seja buscada da memória, não do IBR
             }
             break;
         
         case 0x10: // Instrução: JUMP+ M(X, 20:39) | Binário: 00010000
             if (regs.AC >= 0) {
-                // Lógica do Jump Condicional Direito
+                regs.PC = regs.MAR; // Salta para o endereço da metade direita
+                regs.MBR = lePalavra(regs.PC);
+                regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
+                regs.PC++;
+                usar_ibr = 1;
             }
             break;
 
 
         // MODIFICAÇÃO DE ENDEREÇO 
         case 0x12: // Instrução: STOR M(X, 8:19) | Binário: 00010010
-            // Substitui o campo de endereço da metade esquerda na memória
+            // Puxa a palavra original de 40 bits que está lá na memória para o MBR
+            buscaOperando(); 
+            // Limpa apenas os 12 bits do endereço esquerdo antigo (bits 20 a 31)
+            regs.MBR = regs.MBR & ~((unsigned long long)BITS_ENDERECO << 20);
+            long long int novoEndEsq = (regs.AC & BITS_ENDERECO) << 20;
+            //Combina a palavra limpa com o novo endereço e grava de volta na memória
+            regs.MBR = regs.MBR | novoEndEsq;
+            escrevePalavra();
             break;
         
         case 0x13: //Instrução: STOR M(X, 28:39) | Binário: 00010011
-            // Substitui o campo de endereço da metade direita na memória
+            buscaOperando(); 
+            regs.MBR = regs.MBR & ~((unsigned long long)BITS_ENDERECO);
+            long long int novoEndDir = regs.AC & BITS_ENDERECO;
+            regs.MBR = regs.MBR | novoEndDir;
+            escrevePalavra();
             break;
 
         default:
@@ -175,5 +205,5 @@ void executaInstrucao(){
 
 
 void escreveResultado(){
-    escrevePalavra(regs.AC);
+    escrevePalavra();
 }

@@ -18,8 +18,8 @@ long long int lePalavra(){
 }
 
 
-void escrevePalavra(long long int palavra){
-    print("Palavra lida do endereco: %d\n", regs.MAR);
-    long long int palavraEscrever = palavra & BITS_PALAVRA; //0 todos bits à esquerda dos 40 menos significativos
+void escrevePalavra(){
+    printf("Palavra escrita no endereco: %d\n", regs.MAR);
+    long long int palavraEscrever = regs.MBR & BITS_PALAVRA; //0 todos bits à esquerda dos 40 menos significativos
     memoria[regs.MAR] = palavraEscrever;
 }

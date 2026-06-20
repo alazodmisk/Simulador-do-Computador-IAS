@@ -11,6 +11,8 @@ typedef struct
     int IR;
     int MAR;
     int PC;
+
+    int ERRO;
 }bancoRegistradores;
 
 void inicializarRegistradores();
