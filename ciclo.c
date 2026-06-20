@@ -182,7 +182,7 @@ void executaInstrucao(){
             buscaOperando(); 
             // Limpa apenas os 12 bits do endereço esquerdo antigo (bits 20 a 31)
             regs.MBR = regs.MBR & ~((unsigned long long)BITS_ENDERECO << 20);
-            long long int novoEndEsq = (regs.AC & BITS_ENDERECO) << 20;
+            long long int novoEndEsq = regs.AC & BITS_ENDERECO;
             //Combina a palavra limpa com o novo endereço e grava de volta na memória
             regs.MBR = regs.MBR | novoEndEsq;
             escrevePalavra();
