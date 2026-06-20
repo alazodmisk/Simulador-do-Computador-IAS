@@ -9,7 +9,6 @@
 #define TAMANHO_MEMORIA 1000
 #define INICIO_INSTRUCOES 100
 
-// Promessas das funções (apenas o esqueleto)
 void inicializarMemoria();
 long long int lePalavra();
 void escrevePalavra();
