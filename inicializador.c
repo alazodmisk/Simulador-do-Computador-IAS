@@ -130,7 +130,7 @@ void iniciarCicloDeMaquina(){
             return;
         }
 
-        buscaOperandos();
+        buscaOperando();
         printf("-> [2] Busca de Operandos: \n");
         printf("       Dado carregado (MBR) = %lld\n", regs.MBR);
         esperarEnter();

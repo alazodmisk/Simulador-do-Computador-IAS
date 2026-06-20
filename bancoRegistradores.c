@@ -1,6 +1,8 @@
 #include "bancoRegistradores.h"
 #include "memoria.h"
 
+bancoRegistradores regs;
+
 void inicializarRegistradores(){
     regs.MBR = 0;
     regs.AC = 0;

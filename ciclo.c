@@ -35,7 +35,7 @@ void decodificacaoInstrucao(){
 
 
 void buscaOperando(){
-    regs.MBR = lePalavra(regs.MAR);
+    regs.MBR = lePalavra();
 }
 
 
@@ -117,9 +117,11 @@ void executaInstrucao(){
         
         case 0x0B: // Instrução: MUL M(X) | Binário: 00001011
             buscaOperando();
-            __int128 resultadoMultiplicacao = (__int128)regs.MQ * regs.MBR;
-            regs.MQ = resultadoMultiplicacao & BITS_PALAVRA; // Parte menos significativa
-            regs.AC = (resultadoMultiplicacao >> 40) & BITS_PALAVRA; // Parte mais significativa
+                unsigned long long resultado;
+                buscaOperando();
+                resultado = (unsigned long long)regs.MQ * (unsigned long long)regs.MBR;
+                regs.MQ = resultado & BITS_PALAVRA;
+                regs.AC = (resultado >> 40) & BITS_PALAVRA;
             break;
         
         case 0x0C: // Instrução: DIV M(X) | Binário: 00001100

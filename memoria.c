@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "memoria.h"
 #include "bancoRegistradores.h"
 
