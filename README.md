@@ -10,4 +10,4 @@ ADD 103
 STOR 104 (Valor do endereço)
 DADO 5
 DADO 10 (Valor do dado)
-HALT 0
+HALT 0 (Marca o fim da execução)
