@@ -1,5 +1,6 @@
 # Simulador-do-Computador-IAS
 Trabalho de Arq com o Guilherme VIana
+
 Compile com o comando:
 gcc bancoRegistradores.c ciclo.c inicializador.c memoria.c -o simulador
 
