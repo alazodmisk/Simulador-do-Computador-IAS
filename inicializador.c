@@ -127,7 +127,7 @@ void iniciarCicloDeMaquina(){
         buscaInstrucao();
         printf("-> [1] Busca da Instrucao: \n");
         printf("       Opcode (IR) = %d | Endereco (MAR) = %d\n", regs.IR, regs.MAR);
-        printf("       \n", regs.IR, regs.MAR);
+        printf("       Endereco (MAR) = %d\n", regs.MAR);
         esperarEnter();
         if (regs.ERRO) {
             printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
@@ -137,6 +137,7 @@ void iniciarCicloDeMaquina(){
         buscaOperando();
         printf("-> [2] Busca de Operandos: \n");
         printf("       Dado carregado (MBR) = %lld\n", regs.MBR);
+        printf("       Endereco (MAR) = %d\n", regs.MAR);
         esperarEnter();
         if (regs.ERRO) {
             printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
@@ -146,6 +147,7 @@ void iniciarCicloDeMaquina(){
         executaInstrucao();
         printf("-> [3] Execucao: \n");
         printf("       Acumulador (AC) = %lld | Multiplicador (MQ) = %lld\n", regs.AC, regs.MQ);
+        printf("       Endereco (MAR) = %d\n", regs.MAR);
         esperarEnter();
         if (regs.ERRO) {
             printf("\n*** Erro detectado no ciclo de maquina. Parando a execucao. ***\n");
@@ -177,6 +179,7 @@ int main (){
     printf("      SIMULADOR COMPUTADOR IAS     \n");
     printf("===================================\n");
 
+    inicializarRegistradores();
 
     do {
         printf("1. Carregar programa (.txt)\n");

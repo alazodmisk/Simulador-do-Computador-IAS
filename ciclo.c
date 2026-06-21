@@ -8,7 +8,7 @@ int usar_ibr = 0;
 
 void buscaInstrucao(){
     if (usar_ibr){
-        regs.MAR = regs.MBR & BITS_ENDERECO;
+        regs.MAR = regs.IBR & BITS_ENDERECO;
         regs.IR = (regs.IBR >> 12) & BITS_OPCODE;
         usar_ibr = 0;
         printf("Instrucao colhida o registrador IBR\n");
@@ -85,36 +85,36 @@ void executaInstrucao(){
         
         case 0x21: // Instrução: STOR M(X) | Binário: 00100001
             regs.MBR = regs.AC & BITS_PALAVRA;
-            escreveResultado(regs.MBR);
+            escreveResultado();
             break;
 
 
         // ARITMÉTICA
         case 0x05: // Instrução: ADD M(X) | Binário: 00000101
             buscaOperando();
-            regs.AC = regs.AC + regs.MBR;
+            regs.AC = regs.AC + regs.MBR & BITS_PALAVRA;;
             break;
         
         case 0x06: // Instrução: SUB M(X) | Binário: 00000110
             buscaOperando();
-            regs.AC = regs.AC - regs.MBR; //Não sei se pode fazer isso
+            regs.AC = regs.AC - regs.MBR & BITS_PALAVRA;
             break;
         
         case 0x07: // Instrução: ADD |M(X)| | Binário: 00000111
             if (regs.MBR >= 0){
-                regs.AC = regs.AC + regs.MBR;
+                regs.AC = regs.AC + regs.MBR & BITS_PALAVRA;
             }
             else{
-                regs.AC = regs.AC - regs.MBR;
+                regs.AC = regs.AC - regs.MBR & BITS_PALAVRA;
             }
             break;
         
         case 0x08: // Instrução: SUB |M(X)| | Binário: 00001000
             if (regs.MBR >= 0){
-                regs.AC = regs.AC - regs.MBR;
+                regs.AC = regs.AC - regs.MBR & BITS_PALAVRA;
             }
             else{
-                regs.AC = regs.AC + regs.MBR;
+                regs.AC = regs.AC + regs.MBR & BITS_PALAVRA;
             }
             break;
         
