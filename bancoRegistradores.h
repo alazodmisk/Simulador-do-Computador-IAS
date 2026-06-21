@@ -16,7 +16,7 @@ typedef struct
 }bancoRegistradores;
 
 void inicializarRegistradores();
-
+void imprimeRegs();
 extern bancoRegistradores regs;
 
 #endif

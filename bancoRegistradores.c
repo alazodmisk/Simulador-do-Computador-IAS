@@ -16,3 +16,13 @@ void inicializarRegistradores(){
 
     regs.ERRO = 0;
 }
+
+void imprimeRegs(){
+    printf("AC: %lld\n", regs.AC);
+    printf("MQ: %lld\n", regs.MQ);
+    printf("MBR: %lld\n", regs.MBR);
+    printf("IBR: %d\n", regs.IBR);
+    printf("IR: %d\n", regs.IR);
+    printf("MAR: %d\n", regs.MAR);
+    printf("PC: %d\n", regs.PC);
+}

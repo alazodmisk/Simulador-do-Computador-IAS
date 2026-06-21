@@ -175,8 +175,10 @@ int main (){
 
 
     do {
+        imprimeMemoria();
         printf("1. Carregar programa (.txt)\n");
         printf("2. Rodar o programa completo\n");
+        printf("3, Imprimir memória e registradores \n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -194,6 +196,10 @@ int main (){
                 printf("Execucao finalizada.\n");
                 break;
 
+            case 3:
+                imprimeMemoria();
+                imprimeRegs();
+                break;
             case 0:
                 printf("Desligando o simulador...\n");
                 break;

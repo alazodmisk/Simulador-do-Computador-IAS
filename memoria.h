@@ -12,5 +12,5 @@
 void inicializarMemoria();
 long long int lePalavra();
 void escrevePalavra();
-
+void imprimeMemoria();
 #endif
