@@ -73,10 +73,12 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
                 }
             
             long long int opcodeAtual = traduzirOpcode(instrucao);
+            printf("Instrucao lida: %s | Valor/Endereco: %d | Opcode traduzido: %lld\n", instrucao, valorEnd, opcodeAtual);
 
             if (opcodeAtual == -1) {
                 regs.MAR = enderecoAtualDados;
-                escrevePalavra(valorEnd);
+                regs.MBR = valorEnd;
+                escrevePalavra();
                 enderecoAtualDados++;
             } 
             else {
@@ -90,7 +92,8 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
                     
                     long long int palavraCompleta = (opcodeEsq << 32) | (endEsq << 20) | (opcodeDir << 12) | endDir;
                     regs.MAR = enderecoAtualInstrucoes;
-                    escrevePalavra(palavraCompleta);
+                    regs.MBR = palavraCompleta;
+                    escrevePalavra();
                     enderecoAtualInstrucoes++;
                     leuEsquerda = 0;
                 }
@@ -100,7 +103,8 @@ void carregarProgramaDeArquivo(char* nomeArquivo){
         if (leuEsquerda == 1) {
             long long int palavraIncompleta = (opcodeEsq << 32) | (endEsq << 20);
             regs.MAR = enderecoAtualInstrucoes;
-            escrevePalavra(palavraIncompleta);
+            regs.MBR = palavraIncompleta;
+            escrevePalavra();
             enderecoAtualInstrucoes++;
         }
 
@@ -175,10 +179,9 @@ int main (){
 
 
     do {
-        imprimeMemoria();
         printf("1. Carregar programa (.txt)\n");
         printf("2. Rodar o programa completo\n");
-        printf("3, Imprimir memória e registradores \n");
+        printf("3. Imprimir memoria e registradores \n");
         printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -189,13 +192,11 @@ int main (){
                 scanf("%s", nomeArquivo);
                 carregarProgramaDeArquivo(nomeArquivo);
                 break;
-
             case 2:
                 printf("\nIniciando execucao...\n");
                 iniciarCicloDeMaquina();
                 printf("Execucao finalizada.\n");
                 break;
-
             case 3:
                 imprimeMemoria();
                 imprimeRegs();

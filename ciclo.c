@@ -17,7 +17,7 @@ void buscaInstrucao(){
         printf("Instrucao lida da memoria\n");
         regs.MAR = regs.PC;
         regs.MBR = lePalavra();
-        regs.PC = regs.PC ++;
+        regs.PC++;
 
         decodificacaoInstrucao(); // Só chama a decodifica instrução se não houver instrução à direita
     }
@@ -42,6 +42,9 @@ void buscaOperando(){
 void executaInstrucao(){
     switch (regs.IR)
     {
+        case 0x00: // Instrução: HALT | Binário: 00000000
+            printf("Instrucao HALT executada. Parando o ciclo.\n");
+            return;
         // TRANSFERÊNCIA DE DADOS     
         case 0x01: // Instrução: LOAD M(X) | Binário: 00000001
             buscaOperando();

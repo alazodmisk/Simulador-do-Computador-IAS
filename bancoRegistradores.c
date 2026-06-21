@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "bancoRegistradores.h"
 #include "memoria.h"
 
@@ -16,6 +17,7 @@ void inicializarRegistradores(){
 
     regs.ERRO = 0;
 }
+
 
 void imprimeRegs(){
     printf("AC: %lld\n", regs.AC);
