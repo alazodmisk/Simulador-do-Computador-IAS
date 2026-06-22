@@ -12,7 +12,7 @@ typedef struct
     int MAR;
     int PC;
 
-    int ERRO;
+    int ERRO; //Não é registrador, apenas uma flag para indicar erro
 }bancoRegistradores;
 
 void inicializarRegistradores();

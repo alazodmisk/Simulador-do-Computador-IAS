@@ -15,7 +15,7 @@ void inicializarRegistradores(){
     
     regs.PC = INICIO_INSTRUCOES;
 
-    regs.ERRO = 0;
+    regs.ERRO = 0; //Não é registrador, apenas uma flag para indicar erro
 }
 
 

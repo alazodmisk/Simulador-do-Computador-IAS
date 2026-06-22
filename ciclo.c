@@ -132,7 +132,7 @@ void executaInstrucao(){
             
             if (regs.MBR == 0) {
                 fprintf(stderr, "Erro: divisao por zero.\n");
-                regs.ERRO = 1; // Sinaliza o erro no banco de registradores
+                regs.ERRO = 1;
                 return;
             }
             
@@ -183,12 +183,9 @@ void executaInstrucao(){
 
         // MODIFICAÇÃO DE ENDEREÇO 
         case 0x12: // Instrução: STOR M(X, 8:19) | Binário: 00010010
-            // Puxa a palavra original de 40 bits que está lá na memória para o MBR
             buscaOperando(); 
-            // Limpa apenas os 12 bits do endereço esquerdo antigo (bits 20 a 31)
             regs.MBR = regs.MBR & ~((unsigned long long)BITS_ENDERECO << 20);
             long long int novoEndEsq = regs.AC & BITS_ENDERECO;
-            //Combina a palavra limpa com o novo endereço e grava de volta na memória
             regs.MBR = regs.MBR | novoEndEsq;
             escrevePalavra();
             break;
