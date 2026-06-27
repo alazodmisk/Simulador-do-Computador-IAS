@@ -57,7 +57,8 @@ void executaInstrucao(){
             break;
         
         case 0x03: // Instrução: LOAD |M(X)| | Binário: 00000011
-            if (regs.MBR >= 0){
+            buscaOperando();
+            if (regs.MBR >= 0 & 0x8000000000ULL){
                 regs.AC = regs.MBR;
             }
             else{
@@ -66,7 +67,8 @@ void executaInstrucao(){
             break;
         
         case 0x04: // Instrução: LOAD -|M(X)| | Binário: 00000100
-            if (regs.MBR >= 0){
+            buscaOperando();
+            if (regs.MBR >= 0 & 0x8000000000ULL){
                 regs.AC = -regs.MBR;
             }
             else{
@@ -101,7 +103,8 @@ void executaInstrucao(){
             break;
         
         case 0x07: // Instrução: ADD |M(X)| | Binário: 00000111
-            if (regs.MBR >= 0){
+            buscaOperando();
+            if (regs.MBR >= 0 & 0x8000000000ULL){
                 regs.AC = regs.AC + regs.MBR & BITS_PALAVRA;
             }
             else{
@@ -110,7 +113,8 @@ void executaInstrucao(){
             break;
         
         case 0x08: // Instrução: SUB |M(X)| | Binário: 00001000
-            if (regs.MBR >= 0){
+            buscaOperando();
+            if (regs.MBR >= 0 & 0x8000000000ULL){
                 regs.AC = regs.AC - regs.MBR & BITS_PALAVRA;
             }
             else{
@@ -157,21 +161,21 @@ void executaInstrucao(){
         
         case 0x0E: // Instrução: JUMP M(X, 20:39) | Binário: 00001110
             regs.PC = regs.MAR; // Salta para o endereço da metade direita
-            regs.MBR = lePalavra(regs.PC);
+            regs.MBR = lePalavra();
             regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
             regs.PC++;
             usar_ibr = 1;
             break;
         
         case 0x0F: // Instrução: JUMP+ M(X, 0:19) | Binário: 00001111
-            if (regs.AC >= 0) {
+            if ((regs.AC & 0x8000000000ULL) == 0) {
                 regs.PC = regs.MAR; // Salta para o endereço da metade esquerda
                 usar_ibr = 0; // Garante que a próxima instrução seja buscada da memória, não do IBR
             }
             break;
         
         case 0x10: // Instrução: JUMP+ M(X, 20:39) | Binário: 00010000
-            if (regs.AC >= 0) {
+            if ((regs.AC & 0x8000000000ULL) == 0) {
                 regs.PC = regs.MAR; // Salta para o endereço da metade direita
                 regs.MBR = lePalavra(regs.PC);
                 regs.IBR = regs.MBR & BITS_INSTR_DIREITA;

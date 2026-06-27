@@ -35,7 +35,11 @@ void imprimeMemoria(){
     }
     printf("DADOS\n");
     for(int z = 0; z < INICIO_INSTRUCOES; z++){
-        printf("Dado de numero %d: %lld\n", numero, memoria[z]);
+        if (memoria[z] & 0x8000000000ULL) {
+            printf("Dado de numero %d: %lld\n", numero, memoria[z] | 0xFFFFFF0000000000ULL);
+        } else {
+            printf("Dado de numero %d: %lld\n", numero, memoria[z]);
+        }
         numero += 1;
     }
 }
