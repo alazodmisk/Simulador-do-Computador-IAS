@@ -177,7 +177,7 @@ void executaInstrucao(){
         case 0x10: // Instrução: JUMP+ M(X, 20:39) | Binário: 00010000
             if ((regs.AC & 0x8000000000ULL) == 0) {
                 regs.PC = regs.MAR; // Salta para o endereço da metade direita
-                regs.MBR = lePalavra(regs.PC);
+                regs.MBR = lePalavra();
                 regs.IBR = regs.MBR & BITS_INSTR_DIREITA;
                 regs.PC++;
                 usar_ibr = 1;
